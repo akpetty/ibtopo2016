@@ -52,8 +52,7 @@ def get_atm_from_dms(res):
 	atm_files = glob(ATM_path+str(year)+'/'+date+'/*')
 	#print size(atm_files)
 	for j in xrange(size(atm_files)):
-		atm_time = float(atm_files[j][71:77])
-		atm_time = float(atm_files[j][71:77])
+		atm_time = float(atm_files[j][-17:-11])
 		#print atm_time
 		#print float(dms_time[0:-2])
 		if (atm_time>float(dms_time[0:-2])):
@@ -224,7 +223,7 @@ def plot_6plot_thresh(dms_plot=0):
 	print 'Saving figure...'
 	subplots_adjust(bottom=0.07, left=0.09, top = 0.96, right=0.98, hspace=0.22)
 
-	savefig(figpath+'atm_dms6plot_'+str(xy_res)+'mxy_'+date+'_'+dms_time+int_method+str(int(min_ridge_height*100))+'_cm2.png', dpi=300)
+	savefig(figpath+'figure3.png', dpi=300)
 
 def plot_probdist():
 
@@ -256,9 +255,9 @@ norm = ro.MidpointNormalize(midpoint=0)
 xy_res=2
 pwidth=20
 pint=5
-num_points_req=100/(xy_res**2)
+min_ridge_size=100
 
-dms_image = 7
+dms_image = 1
 min_ridge_height = .2
 
 minvalEL=-1
@@ -382,7 +381,8 @@ level_elev, level_elevl, level_elevu, min_index, thresh = ro.calc_level_ice(elev
 #thresh = level_elev+min_ridge_height
 
 hist, bins = histogram(elevation_ma, bins=100, density=True)
-plot_probdist()
+#PLOT OUT PROB DISTRIBUTION FOR CHECKING
+#plot_probdist()
 
 #-------------- CREATE 2D ATM GIRD ------------------
 print 'GRID ATM...'
@@ -401,7 +401,8 @@ level_ice = ma.masked_where((elevation2d<level_elevl) | (elevation2d>level_elevu
 elevation2d_ridge_maL =elevation2d_ridge_ma-level_elev
 level_ice=level_ice-level_elev
 #-------------- LABEL ARRAY ------------------
-label_im  = ro.get_labels(elevation2d_ridge_maL, xy_res, min_ridge_height)
+label_im  = ro.get_labels(elevation2d_ridge_maL, xy_res, min_ridge_size, min_ridge_height)
+#label_im  = ro.get_labels(elevation2d_ridge_maL, xy_res, min_ridge_height)
 
 found_big_ridge=0
 if (np.amax(label_im)>0):

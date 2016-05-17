@@ -797,74 +797,6 @@ def kdtree_clean(xx2d, yy2d, xS, yS, elevation2d):
 	elevation2d_KD=ma.masked_where(dist > 4, elevation2d)
 	return elevation2d_KD
 
-def get_labels(elevation2d_ridge_ma, num_points_req):
-	#GET BOOLEEN ARRAY WHERE TRUE IS VALID RIDGE DATA.
-	#NOTE THE SQUIGGLE!
-	tS=time.time()
-
-	elevation2d_ridge_mask = ~ma.getmask(elevation2d_ridge_ma)
-	#SQURE OR DIAGONAL STRUCTIRE FOR LABELLING
-	struct = ndimage.generate_binary_structure(2, 2)
-	t1=time.time()
-	#scan across array and label connected componenets
-	# returns a labelled array (integers for different labels) and the number of labels
-	label_im, nb_labels = ndimage.label(elevation2d_ridge_mask, structure=struct)
-	t2=time.time()
-	print 'Label time:', t2-t1
-	t1=time.time()
-	#find the unique label numbers and how many of each label are in the labelled array
-	label_nums, label_num_counts = unique(label_im, return_counts=True)
-	t2=time.time()
-	print 'Unique 1 time:', t2-t1
-	#make a note of the label numbers where there are less than a certain number of points in that label
-	#labels_small = label_nums[where(label_num_counts<num_points_req)]
-
-	labels_big = label_nums[where(label_num_counts>num_points_req)]
-
-	#REMOVE JUST THE BACKGROUND LABEL OF NO FEATURE
-	labels_big=labels_big[1:]
-	# assign all small labels 0 so we can mask them out later
-	#t1=time.time()
-	#for i in xrange(size(labels_small)):
-	#	label_im = where(label_im==labels_small[i], 0, label_im)
-	#t2=time.time()
-	#print 'Small time:', t2-t1
-	#return the new labelled array (where all small labels were et to 0)
-	#label_num_counts_ma is the number of large labels
-	#t1=time.time()
-	#label_numsL, label_num_countsL = unique(label_im, return_counts=True)
-	#t2=time.time()
-	#print 'Unique 2 time:', t2-t1
-	#mask all zero values (small labels)
-	#label_im_ma=ma.masked_where(label_im<1, label_im)
-
-	
-	# GREATER THAN 1 AS IT ALWAYS HAS ZERO AS A LABEL EVEN THOUGH IT IS JUST THE BACKGROUND
-	if (size(labels_big))>0:
-		#print "Ridge found"
-		found_ridge=1
-			#COMPRESS LABELS TO NUMBER OF UNIQUE LABELS (NO EMPTY NUMBERS)
-		for x in xrange(amax(label_im)+1):
-			if float(x) not in labels_big:
-				label_im[label_im==x]=0
-
-		label_im_c=np.zeros((label_im.shape))
-		for x in xrange(size(labels_big)):
-			label_im_c[where(label_im==labels_big[x])] = x+1
-
-		label_im_c_int = label_im_c.astype('int')
-		
-		#print 'Number of labels:', size(labels_big)
-	else:
-		#print "No ridge detected"
-		found_ridge=0
-		label_im_c=np.zeros((label_im.shape))
-		label_im_c_int = label_im_c.astype('int')
-
-
-	#return the new compressed, masked label array and the label numbers
-	return label_im_c_int, label_num_counts
-
 def get_labelsBIGNOWATER(elevation2d_ridge_ma, num_points_req):
 	#GET BOOLEEN ARRAY WHERE TRUE IS VALID RIDGE DATA.
 
@@ -890,7 +822,7 @@ def get_labelsBIGNOWATER(elevation2d_ridge_ma, num_points_req):
 	#return the new compressed, masked label array and the label numbers
 	return label_imBIG
 
-def get_labelsNEW(elevation2d_ridge_ma, xy_res, min_ridge_size, min_ridge_height):
+def get_labels(elevation2d_ridge_ma, xy_res, min_ridge_size, min_ridge_height):
 	#GET BOOLEEN ARRAY WHERE TRUE IS VALID RIDGE DATA.
 	num_points_req=min_ridge_size/(xy_res**2)
 	elevation2d_ridge_mask = ~ma.getmask(elevation2d_ridge_ma)
