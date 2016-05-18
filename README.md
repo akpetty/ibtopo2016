@@ -10,7 +10,7 @@ The 'calc' scripts are all used to process IceBridge ATM data into 'topography' 
 
 calc_multi_atm.py is the primary processing script for generating surface feature data from the IceBridge ATM data (and posAV data).
 
-The processed data can be downloaded from ADD ZENEDO LINK WITH DERIVED DATA.
+The processed data can be downloaded from https://zenodo.org/record/51569.
 Place this in the Data_output folder. Note that this data is in a binary Python format so data readers (included in IB_functions.py) are needed.
 
 The following raw IceBridge datasets are needed before this script will run:
@@ -21,6 +21,9 @@ The IceBridge IDCSI4 and quick-look sea ice data: http://nsidcorg/data/docs/daac
 For some of the extra processing/plotting, the following datasets are also required:
 The daily OSI-SAF ice type data: http://saf.met.no/p/ice/
 The nearest coastline proximity data: http://oceancolor.gsfc.nasa.gov/DOCS/DistFromCoast/.
+
+which have been included in the data link given above, along with the DMS image used in figure 3.
+
 
 Note also that Python 2.7 was used for all processing. I have not tested these scripts in Python 3.
 
