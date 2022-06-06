@@ -11,9 +11,12 @@ The 'calc' scripts are all used to process IceBridge ATM data into 'topography' 
 calc_multi_atm.py is the primary processing script for generating surface feature data from the IceBridge ATM data (and posAV data).
 
 The processed data can be downloaded from https://zenodo.org/record/51569.
-Place this in the Data_output folder. Note that this data is in a binary Python format so data readers (included in IB_functions.py) are needed.
+Place this in the Data_output folder. Note that this data is in a binary Python format so data readers (included in IB_functions.py) are needed. 
 
-The following raw IceBridge datasets are needed before this script will run:
+Update (0606/2022)! To load this data in Python 3 you need to specify the encoding, please see: https://rebeccabilbro.github.io/convert-py2-pickles-to-py3/. I have also uploaded the 20 cm ridge height information as CSV files to a new Zenodo archive for thos enot using Python: https://doi.org/10.5281/zenodo.6617714
+
+
+The following raw IceBridge datasets are needed before the ridge calculation scripts will run:
 The IceBridge ATM data: https://nsidc.org/data/docs/daac/icebridge/ilatm1b/. 
 The IceBridge DMS imagery: http://nsidc.org/data/iodms1b}. 
 The IceBridge IDCSI4 and quick-look sea ice data: http://nsidcorg/data/docs/daac/icebridge/evaluation_products/sea ice-freeboard-snowdepth-thickness-quicklook-index.html and http://nsidc.org/data/idcsi4.html. 
